@@ -57,7 +57,7 @@
         document.getElementById('add-form').addEventListener('submit', function(event) {
             event.preventDefault(); // 폼 자동 제출 방지
 
-            // 1. 폼 데이터 가져오기
+    
             const word = document.getElementById('word').value.trim();
             const meaning = document.getElementById('meaning').value.trim();
             const example = document.getElementById('example').value.trim();
@@ -65,13 +65,13 @@
             const importance = document.getElementById('importance').value;
             const reg_date = document.getElementById('reg-date').value;
 
-            // 2. Validation Check
+  
             if (word === '' || meaning === '' || status === '' || importance === '' || reg_date === '') {
                 alert('모든 필수 항목(단어, 의미, 암기 상태, 중요도, 등록일)을 입력/선택해주세요.');
                 return;
             }
 
-            // 3. 서버로 보낼 객체 생성
+
             const newWord = {
                 word: word,
                 meaning: meaning,
@@ -79,7 +79,7 @@
                 status: status,
                 importance: importance,
                 reg_date: reg_date
-                // id는 json-server가 자동으로 생성합니다.
+  
             };
 
             // 4. fetch를 사용하여 POST 요청 (Create)
@@ -97,9 +97,9 @@
                 return response.json();
             })
             .then(data => {
-                // 5. 성공 시
+   
                 alert('단어가 성공적으로 추가되었습니다.');
-                // 목록 페이지로 이동
+               
                 window.location.href = 'my_ajax.html'; 
             })
             .catch(error => {
