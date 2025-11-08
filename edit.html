@@ -54,11 +54,10 @@
     </div>
 
     <script>
-        // 1. URL에서 ID 값 추출
+
         const params = new URLSearchParams(window.location.search);
         const wordId = params.get('id');
 
-        // 폼 요소 미리 찾아두기
         const form = document.getElementById('edit-form');
         const inputWord = document.getElementById('word');
         const inputMeaning = document.getElementById('meaning');
@@ -68,7 +67,7 @@
         const inputRegDate = document.getElementById('reg-date');
         const cancelLink = document.getElementById('cancel-link');
 
-        // 2. 페이지 로드 시, 수정할 기존 데이터 1개 가져오기
+
         document.addEventListener('DOMContentLoaded', function() {
             if (!wordId) {
                 alert('오류: ID 값이 없습니다.');
@@ -76,10 +75,10 @@
                 return;
             }
             
-            // 취소 버튼이 상세 보기 페이지로 돌아가도록 링크 설정
+
             cancelLink.href = `view.html?id=${wordId}`;
 
-            // 기존 데이터 1개 요청 (예: /words/1)
+
             fetch(`http://localhost:3000/words/${wordId}`)
                 .then(response => {
                     if (!response.ok) {
@@ -88,10 +87,10 @@
                     return response.json();
                 })
                 .then(data => {
-                    // 3. 받아온 데이터로 폼(form)의 값들 채우기
+ 
                     inputWord.value = data.word;
                     inputMeaning.value = data.meaning;
-                    inputExample.value = data.example || ''; // 예문이 null일 경우 빈 문자열
+                    inputExample.value = data.example || ''; 
                     selectStatus.value = data.status;
                     selectImportance.value = data.importance;
                     inputRegDate.value = data.reg_date;
@@ -102,11 +101,11 @@
                 });
         });
 
-        // 4. 폼 제출(수정) 이벤트 (Update)
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // 기본 제출 동작 방지
 
-            // 폼에서 수정된 값들 가져오기
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+
             const updatedWord = {
                 word: inputWord.value.trim(),
                 meaning: inputMeaning.value.trim(),
@@ -114,19 +113,19 @@
                 status: selectStatus.value,
                 importance: selectImportance.value,
                 reg_date: inputRegDate.value
-                // id는 json-server가 관리하므로 PUT 요청 시엔 그대로 사용
+
             };
 
-            // Validation Check
+
             if (updatedWord.word === '' || updatedWord.meaning === '' || updatedWord.status === '' || updatedWord.importance === '' || updatedWord.reg_date === '') {
                 alert('모든 필수 항목(단어, 의미, 암기 상태, 중요도, 등록일)을 입력/선택해주세요.');
                 return;
             }
 
             if (confirm('게시물을 수정할까요?')) {
-                // 5. fetch를 사용하여 PUT 요청 (Update)
+
                 fetch(`http://localhost:3000/words/${wordId}`, {
-                    method: 'PUT', // PUT: 전체 데이터를 덮어쓰기
+                    method: 'PUT', 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -140,7 +139,6 @@
                 })
                 .then(data => {
                     alert('단어가 성공적으로 수정되었습니다.');
-                    // 수정된 내용을 바로 확인하기 위해 상세 보기 페이지로 이동
                     window.location.href = `view.html?id=${wordId}`;
                 })
                 .catch(error => {
