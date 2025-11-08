@@ -34,11 +34,9 @@
     </div>
 
     <script>
-        // 페이지 로드가 완료되면 실행
         document.addEventListener('DOMContentLoaded', function() {
             const tbody = document.getElementById('word-list-body');
             
-            // 1. json-server에서 데이터 가져오기 (Read)
             fetch('http://localhost:3000/words')
                 .then(response => {
                     if (!response.ok) {
@@ -47,7 +45,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    // 2. tbody 내용 비우기
                     tbody.innerHTML = '';
                     
                     if (data.length === 0) {
@@ -55,12 +52,9 @@
                         return;
                     }
 
-                    // 3. 받아온 데이터(배열)를 순회하며 <tr> 생성
                     data.forEach(word => {
                         const tr = document.createElement('tr');
                         
-                        // 4. <tr>에 내용 채우기 (data-label은 모바일 반응형을 위함)
-                        //    - 핵심: 상세 보기 링크에 ?id=${word.id} 를 추가합니다.
                         tr.innerHTML = `
                             <td data-label="단어" class="word-title">
                                 <a href="view.html?id=${word.id}">${word.word}</a>
@@ -69,8 +63,6 @@
                             <td data-label="암기 상태">${word.status}</td>
                             <td data-label="등록일">${word.reg_date}</td>
                         `;
-                        
-                        // 5. 생성된 <tr>을 tbody에 추가
                         tbody.appendChild(tr);
                     });
                 })
