@@ -22,24 +22,18 @@
     </div>
 
     <script>
-        // 1. URL에서 ID 값 추출하기
         const params = new URLSearchParams(window.location.search);
         const wordId = params.get('id');
         
         const detailsDiv = document.getElementById('word-details');
         const editLink = document.getElementById('edit-link');
-
-        // 2. 페이지 로드 시, 해당 ID의 데이터 1개만 가져오기 (Read Detail)
+        
         document.addEventListener('DOMContentLoaded', function() {
             if (!wordId) {
                 detailsDiv.innerHTML = '<p style="color: red;">오류: ID 값이 없습니다.</p>';
                 return;
             }
-            
-            // 수정 버튼의 링크에도 ID를 추가
             editLink.href = `edit.html?id=${wordId}`;
-
-            // 1개의 데이터만 요청 (예: /words/1)
             fetch(`http://localhost:3000/words/${wordId}`)
                 .then(response => {
                     if (!response.ok) {
@@ -48,9 +42,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    // 3. 받아온 데이터로 화면 채우기
-                    
-                    // 중요도를 별 문자로 변환
                     let importanceStars = '★'.repeat(parseInt(data.importance) || 0);
                     
                     detailsDiv.innerHTML = `
@@ -68,7 +59,6 @@
                 });
         });
 
-        // 4. 삭제 (Delete) 기능 구현
         function deleteWord() {
             if (!wordId) {
                 alert('ID 값이 없어 삭제할 수 없습니다.');
@@ -76,7 +66,6 @@
             }
 
             if (confirm('정말로 이 단어를 삭제할까요?')) {
-                // DELETE 요청 (예: /words/1)
                 fetch(`http://localhost:3000/words/${wordId}`, {
                     method: 'DELETE'
                 })
@@ -85,7 +74,7 @@
                         throw new Error('삭제 실패');
                     }
                     alert('삭제되었습니다.');
-                    window.location.href = 'my_ajax.html'; // 목록 페이지로 이동
+                    window.location.href = 'my_ajax.html'; 
                 })
                 .catch(error => {
                     console.error('Error:', error);
